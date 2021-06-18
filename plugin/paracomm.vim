@@ -4,9 +4,9 @@ endif
 
 augroup paracomm
     autocmd!
-    autocmd FileType c,cpp call paracomm#install('cCommentStart', 'cComment', 'cCommentL')
-    autocmd FileType python call paracomm#install('pythonComment', 'pythonTodo')
-    autocmd FileType rust call paracomm#install('rustCommentBlock', 'rustCommentLine')
-    autocmd FileType sh call paracomm#install('shComment')
-    autocmd FileType vim call paracomm#install('vimLineComment')
+    autocmd FileType c,cpp call paracomm#install('cCommentStart', 'cComment', 'cCommentL', 'TSComment')
+    autocmd FileType python call paracomm#install('pythonComment', 'pythonTodo', 'pythonTripleQuotes', 'TSString', 'TSComment')
+    autocmd FileType rust call paracomm#install('rustCommentBlock', 'rustCommentLine', 'TSComment')
+    autocmd FileType sh call paracomm#install('shComment', 'TSComment')
+    autocmd FileType vim call paracomm#install('vimLineComment', 'TSComment')
 augroup END

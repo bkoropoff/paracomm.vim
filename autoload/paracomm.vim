@@ -4,13 +4,47 @@ function! s:SynNameAtCur()
     return synIDattr(synID(line('.'), col('.'), 0), "name")
 endfunction
 
+if exists(':TSInstall')
+    lua require('paracomm')
+    function! s:TSAtCur()
+        let val = v:lua.paracomm_treesitter_hl()
+        if type(val) != v:t_dict
+            return {}
+        end
+        return val
+    endfunction
+else
+    function! s:TSAtCur()
+        return {}
+    endfunction
+endif
+
+function! s:SynAtCur()
+    let res = s:TSAtCur()
+    let syn = s:SynNameAtCur()
+    if syn != ''
+        let res[syn] = syn
+    endif
+    return keys(res)
+endfunction
+
+function! s:IsCommAtCur()
+    let syns = s:SynAtCur()
+    for syn in syns
+        if get(b:paracomm_items, syn, '') != ''
+            return v:true
+        endif
+    endfor
+    return v:false
+endfunction
+
 function! s:IsComm()
     normal! $
-    if get(b:paracomm_items, s:SynNameAtCur(), '') == ''
-        return 0
+    if !s:IsCommAtCur()
+        return v:false
     endif
     normal! ^
-    return get(b:paracomm_items, s:SynNameAtCur(), '') != ''
+    return s:IsCommAtCur()
 endfunction
 
 function! s:IsCommEmpty()
@@ -113,4 +147,8 @@ function! paracomm#install(...)
     onoremap <buffer><silent> ap :<c-u>call <sid>Paragraph(0, v:count1)<cr>
     xnoremap <buffer><silent> ip :<c-u>call <sid>Paragraph(1, v:count1)<cr>
     xnoremap <buffer><silent> ap :<c-u>call <sid>Paragraph(0, v:count1)<cr>
+endfunction
+
+function! paracomm#atcur()
+    return s:SynAtCur()
 endfunction
