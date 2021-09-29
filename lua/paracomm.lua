@@ -28,7 +28,7 @@ function _G.paracomm_treesitter_hl()
 
     local iter = query:query():iter_captures(root, self.bufnr, row, row + 1)
 
-    for capture, node in iter do
+    for capture, node, metadata in iter do
       local hl = query.hl_cache[capture]
 
       if hl and ts_utils.is_in_node_range(node, row, col) then
@@ -36,7 +36,7 @@ function _G.paracomm_treesitter_hl()
         if c ~= nil then
           local general_hl = query:_get_hl_from_capture(capture)
           matches[c] = c
-          matches[hl] = c
+          matches[tostring(hl)] = c
           matches[general_hl] = c
         end
       end
