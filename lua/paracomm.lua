@@ -35,7 +35,6 @@ function _G.paracomm_treesitter_hl()
         local c = query._query.captures[capture] -- name of the capture in the query
         if c ~= nil and c ~= "spell" and c ~= "conceal" then
           matches[c] = c
-          matches[tostring(hl)] = c
         end
       end
     end
